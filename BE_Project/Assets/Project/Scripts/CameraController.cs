@@ -28,7 +28,7 @@ public class CameraController : MonoBehaviour
     public static CameraController instance;
 
     private Vector3 correction = new Vector3(0f, 10f, 0f);
-    private Vector3 position = new Vector3(0f, -10f, 0f);
+    private Vector3 position = new Vector3(0.0f, -10f, 0.0f);
 
     // Awake is called when the script instance is being loaded.  
     // Awake is called only once during the lifetime of the script instance. 
@@ -51,7 +51,7 @@ public class CameraController : MonoBehaviour
     {
         // Sets initial state of cameras
         camera.clearFlags = CameraClearFlags.Skybox;
-        ARCamera.transform.position = position;
+        ARCamera.transform.position += position;
     }
 
     // Update is called once per frame
