@@ -15,6 +15,10 @@ public class InputController : MonoBehaviour
 
     private float zAxisValue, xAxisValue;
 
+    public int horizontalAxis, verticalAxis;
+
+    public bool isStarted;
+
     public static InputController instance;
 
     private void Awake()
@@ -33,17 +37,46 @@ public class InputController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        xAxisValue = 0;
+        zAxisValue = 0;
+        isStarted = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        zAxisValue = handMarker.transform.localPosition.z;
+        zAxisValue = handMarker.transform.localPosition.z - 3.5f;
         xAxisValue = handMarker.transform.localPosition.x;
 
         zAxisText.text = "Z: " + zAxisValue.ToString("0.00");
         xAxisText.text = "X: " + xAxisValue.ToString("0.00");
+
+        if (zAxisValue > 0.5)
+        {
+            verticalAxis = 1;
+        }
+        else if (zAxisValue < -0.5)
+        {
+            verticalAxis = -1;
+        }
+        else
+        {
+            verticalAxis = 0;
+        }
+
+        if (xAxisValue > 0.5)
+        {
+            horizontalAxis = 1;
+        }
+        else if (xAxisValue < -0.5)
+        {
+            horizontalAxis = -1;
+        }
+        else
+        {
+            horizontalAxis = 0;
+        }
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -52,6 +85,7 @@ public class InputController : MonoBehaviour
         {
             Debug.Log("In Null Zone");
             notification.SetActive(true);
+            isStarted = true;
         }
     }
 

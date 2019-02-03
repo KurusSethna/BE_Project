@@ -8,22 +8,32 @@ public class CarController : MonoBehaviour
     private float horizontalInput;
     private float verticalInput;
     private float steeringAngle;
+    private bool isStarted;
 
-    public WheelCollider frontRightWheel, frontLeftWheel, rearFrontWheel, rearLeftWheel;
+    public WheelCollider frontRightWheel, frontLeftWheel, rearRightWheel, rearLeftWheel;
 
     public float maxSteeringAngle = 30.0f;
     public float motorForce = 50.0f;
 
+    private void Start()
+    {
+        horizontalInput = 0;
+        verticalInput = 0;
+        isStarted = false;
+    }
+
     public void GetInput()
     {
-        horizontalInput = Input.GetAxis("Horizontal");
-        verticalInput = Input.GetAxis("Vertical");
+        horizontalInput = InputController.instance.horizontalAxis;
+        verticalInput = InputController.instance.verticalAxis;
+        isStarted = InputController.instance.isStarted;
     }
 
     private void Steer()
     {
         steeringAngle = maxSteeringAngle * horizontalInput;
 
+        Debug.Log("Horizontal: "+horizontalInput);
         frontLeftWheel.steerAngle = steeringAngle;
         frontRightWheel.steerAngle = steeringAngle;
     }
@@ -31,25 +41,18 @@ public class CarController : MonoBehaviour
     private void Accelerate()
     {
         frontRightWheel.motorTorque = verticalInput * motorForce;
+        Debug.Log("Vertical: "+verticalInput);
         frontLeftWheel.motorTorque = verticalInput * motorForce;
-    }
-
-    private void UpdateWheelPoses()
-    {
-
-    }
-
-    private void UpdateWheelPose(WheelCollider _collider, Transform _transform)
-    {
-
     }
 
     void FixedUpdate()
     {
         GetInput();
-        Steer();
-        Accelerate();
-        UpdateWheelPoses();
+        if (isStarted)
+        {
+            Steer();
+            Accelerate();
+        }
     }
 
 }
