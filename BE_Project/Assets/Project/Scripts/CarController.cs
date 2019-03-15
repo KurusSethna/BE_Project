@@ -25,7 +25,9 @@ public class CarController : MonoBehaviour
     public void GetInput()
     {
         horizontalInput = InputController.instance.horizontalAxis;
+        //horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = InputController.instance.verticalAxis;
+        //verticalInput = Input.GetAxis("Vertical");
         isStarted = InputController.instance.isStarted;
     }
 
