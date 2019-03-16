@@ -10,10 +10,17 @@ public class CarController : MonoBehaviour
     private float steeringAngle;
     private bool isStarted;
 
-    public WheelCollider frontRightWheel, frontLeftWheel, rearRightWheel, rearLeftWheel;
+    [SerializeField]
+    private float velocity = 0;
+    [SerializeField]
+    private float maxVelocity = 0;
+    [SerializeField]
+    private float motorForce = 0;
 
-    public float maxSteeringAngle = 30.0f;
-    public float motorForce = 50.0f;
+    public GameObject vehicle;
+
+    private Vector3 position;
+    
 
     private void Start()
     {
@@ -25,34 +32,33 @@ public class CarController : MonoBehaviour
     public void GetInput()
     {
         horizontalInput = InputController.instance.horizontalAxis;
-        //horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = InputController.instance.verticalAxis;
-        //verticalInput = Input.GetAxis("Vertical");
         isStarted = InputController.instance.isStarted;
     }
 
     private void Steer()
     {
-        steeringAngle = maxSteeringAngle * horizontalInput;
-
         Debug.Log("Horizontal: "+horizontalInput);
-        frontLeftWheel.steerAngle = steeringAngle;
-        frontRightWheel.steerAngle = steeringAngle;
     }
 
     private void Accelerate()
     {
-        frontRightWheel.motorTorque = verticalInput * motorForce;
-        Debug.Log("Vertical: "+verticalInput);
-        frontLeftWheel.motorTorque = verticalInput * motorForce;
+        
+        velocity = velocity + (verticalInput * motorForce * Time.deltaTime);
+
+        velocity = Mathf.Clamp(velocity, 0, maxVelocity);
+
+        position = vehicle.transform.position;
+
+        vehicle.transform.position = new Vector3(position.x , position.y, position.z + (velocity * Time.deltaTime));
     }
 
-    void FixedUpdate()
+    void Update()
     {
         GetInput();
         if (isStarted)
         {
-            Steer();
+            //Steer();
             Accelerate();
         }
     }

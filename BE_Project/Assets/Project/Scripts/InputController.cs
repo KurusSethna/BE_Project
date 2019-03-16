@@ -15,7 +15,7 @@ public class InputController : MonoBehaviour
 
     private float zAxisValue, xAxisValue;
 
-    public int horizontalAxis, verticalAxis;
+    public float horizontalAxis, verticalAxis;
 
     public bool isStarted;
 
@@ -51,31 +51,8 @@ public class InputController : MonoBehaviour
         zAxisText.text = "Z: " + zAxisValue.ToString("0.00");
         xAxisText.text = "X: " + xAxisValue.ToString("0.00");
 
-        if (zAxisValue > 0.5)
-        {
-            verticalAxis = 1;
-        }
-        else if (zAxisValue < -0.5)
-        {
-            verticalAxis = -1;
-        }
-        else
-        {
-            verticalAxis = 0;
-        }
-
-        if (xAxisValue > 0.5)
-        {
-            horizontalAxis = 1;
-        }
-        else if (xAxisValue < -0.5)
-        {
-            horizontalAxis = -1;
-        }
-        else
-        {
-            horizontalAxis = 0;
-        }
+        verticalAxis = Mathf.Clamp(zAxisValue, -3.5f, 3.5f) / 3.5f;
+        horizontalAxis = Mathf.Clamp(xAxisValue, -3.5f, 3.5f) / 3.5f;
 
     }
 
@@ -85,6 +62,9 @@ public class InputController : MonoBehaviour
         {
             Debug.Log("In Null Zone");
             notification.SetActive(true);
+        }
+        if(other.tag=="Zero Point")
+        {
             isStarted = true;
         }
     }
