@@ -16,8 +16,17 @@ public class CarController : MonoBehaviour
     private float maxVelocity = 0;
     [SerializeField]
     private float motorForce = 0;
+    [SerializeField]
+    private float acceleration = 0;
+    [SerializeField]
+    private float turning = 0;
+    [SerializeField]
+    private float maxTurning = 0;
 
-    public GameObject vehicle;
+    [SerializeField]
+    private GameObject vehicle;
+    [SerializeField]
+    private Rigidbody vehicleBody;
 
     private Vector3 position;
     
@@ -38,22 +47,24 @@ public class CarController : MonoBehaviour
 
     private void Steer()
     {
-        Debug.Log("Horizontal: "+horizontalInput);
+        turning = horizontalInput * maxTurning;
+        turning = Mathf.Clamp(turning, -maxTurning, maxTurning);
+
+        vehicle.transform.Rotate(Vector3.up, maxTurning/turning );
     }
 
     private void Accelerate()
     {
+        acceleration = (motorForce * verticalInput) / 1050 ;
         
-        velocity = velocity + (verticalInput * motorForce * Time.deltaTime);
+        velocity = velocity + ( acceleration );
 
         velocity = Mathf.Clamp(velocity, 0, maxVelocity);
 
-        position = vehicle.transform.position;
-
-        vehicle.transform.position = new Vector3(position.x , position.y, position.z + (velocity * Time.deltaTime));
+        vehicleBody.AddForce(0, 0, motorForce);
     }
 
-    void Update()
+    void FixedUpdate()
     {
         GetInput();
         if (isStarted)

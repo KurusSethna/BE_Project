@@ -45,7 +45,7 @@ public class InputController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        zAxisValue = handMarker.transform.localPosition.z - 3.5f;
+        zAxisValue = handMarker.transform.localPosition.z - 4.5f;
         xAxisValue = handMarker.transform.localPosition.x;
 
         zAxisText.text = "Z: " + zAxisValue.ToString("0.00");
