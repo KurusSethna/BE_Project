@@ -5,48 +5,60 @@ using UnityEngine;
 public class CarController : MonoBehaviour
 {
 
+    // Serialized Game Objects
+
+    [SerializeField]
+    private WheelCollider frontRightWheel, frontLeftWheel, rearRightWheel, rearLeftWheel;
+
+    // Private variables
+
     private float horizontalInput;
     private float verticalInput;
     private float steeringAngle;
     private bool isStarted;
 
-    public WheelCollider frontRightWheel, frontLeftWheel, rearRightWheel, rearLeftWheel;
+    // Public variables- Will vary as per simulated vehicle
 
-    public float maxSteeringAngle = 30.0f;
-    public float motorForce = 50.0f;
+    public float maxSteeringAngle;
+    public float motorForce;
 
     private void Start()
     {
+        // Initialize variables
         horizontalInput = 0;
         verticalInput = 0;
         isStarted = false;
     }
 
+    // Function to get input values
     public void GetInput()
     {
+        // Get input values from InputController
         horizontalInput = InputController.instance.horizontalAxis;
-        //horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = InputController.instance.verticalAxis;
-        //verticalInput = Input.GetAxis("Vertical");
         isStarted = InputController.instance.isStarted;
     }
 
+    // Function to handle steering
     private void Steer()
     {
+        // Calculate steering angle
         steeringAngle = maxSteeringAngle * horizontalInput;
 
-        Debug.Log("Horizontal: "+horizontalInput);
+        // Turn wheels as per steering able
         frontLeftWheel.steerAngle = steeringAngle;
         frontRightWheel.steerAngle = steeringAngle;
     }
 
+    // Function to handle acceleration
     private void Accelerate()
     {
+        // Calculate motor force wheels
         frontRightWheel.motorTorque = verticalInput * motorForce;
-        Debug.Log("Vertical: "+verticalInput);
         frontLeftWheel.motorTorque = verticalInput * motorForce;
     }
 
+    // Fixed Update function is called at regular intervals, depending on frame rate of device
     void FixedUpdate()
     {
         GetInput();
