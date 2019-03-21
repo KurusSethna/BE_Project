@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Handmarker
   - RootPosition
+  - Null Point
   layers:
   - Default
   - TransparentFX
