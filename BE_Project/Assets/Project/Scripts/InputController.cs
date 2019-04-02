@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/* Input Controller script
+ * Use 1- Gets position of handmarker and converts it into input
+ * Use 2- Begins simulation when marker enters null position 
+ * */
+
 public class InputController : MonoBehaviour
 {
 
@@ -75,10 +80,10 @@ public class InputController : MonoBehaviour
         if (other.tag == "Null Point")
         {
             // Begins simulation only when hand marker enters null zone for the first time
-
-            Debug.Log("In Null Zone");
-            notification.SetActive(true);
             isStarted = true;
+
+            // Notifies user when marker is in null zone
+            notification.SetActive(true);
         }
     }
 

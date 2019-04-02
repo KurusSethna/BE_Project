@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/* Car Controller script
+ * Use 1- Gets input values from Input Controller script
+ * Use 2- Handles acceleration and steering according to input 
+ * */
+
 public class CarController : MonoBehaviour
 {
 
